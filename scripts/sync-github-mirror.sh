@@ -78,9 +78,15 @@ audit() {  # $1 = deskripsi, $2 = regex (ERE), $3 = regex pengecualian (opsional
 # Path home nyata (contoh dummy /home/me, /home/saya, /home/user diizinkan).
 audit "path home pribadi" "/home/[a-z_][a-z0-9_.-]*/|/Users/[A-Za-z][A-Za-z0-9_.-]*/|C:\\\\Users\\\\[A-Za-z]" \
       "/home/(me|saya|user)/|/Users/(me|user)/"
+# Email git repo sumber (dicocokkan sebagai teks literal, bukan regex).
 SRC_EMAIL="$(git config user.email || true)"
 if [ -n "$SRC_EMAIL" ]; then
-  audit "email pribadi" "$(printf '%s' "$SRC_EMAIL" | sed 's/[][.*^$+?(){}|\\]/\\&/g')"
+  email_hits="$(grep -rnIF --exclude-dir=.git -e "$SRC_EMAIL" "$MIRROR" || true)"
+  if [ -n "$email_hits" ]; then
+    echo "AUDIT GAGAL (email pribadi):" >&2
+    echo "$email_hits" | sed "s#^$MIRROR/##" | cut -c1-200 >&2
+    fail=1
+  fi
 fi
 audit "token / kunci" "glpat-[A-Za-z0-9_-]{10,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY"
 [ -f "$MIRROR/config.json" ] && { echo "AUDIT GAGAL: config.json ikut ter-snapshot" >&2; fail=1; }
