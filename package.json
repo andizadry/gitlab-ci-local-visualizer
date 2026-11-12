@@ -1,0 +1,152 @@
+{
+  "name": "gitlab-ci-local-visualizer",
+  "displayName": "GitLab CI Local Visualizer",
+  "description": "100% Offline GitLab CI: preview, include resolver, interactive graph, rules simulator (parent-child, multi-project, dynamic child), inputs, diagnostics, CodeLens",
+  "version": "2.2.2",
+  "publisher": "andizadry",
+  "author": {
+    "name": "Andi Zadry"
+  },
+  "icon": "icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andizadry/gitlab-ci-local-visualizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andizadry/gitlab-ci-local-visualizer/issues"
+  },
+  "homepage": "https://github.com/andizadry/gitlab-ci-local-visualizer#readme",
+  "keywords": [
+    "gitlab",
+    "gitlab-ci",
+    "ci",
+    "pipeline",
+    "yaml",
+    "offline",
+    "rules",
+    "visualizer"
+  ],
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "activationEvents": [
+    "onCommand:gitlab-ci-local.openVisualizer",
+    "onLanguage:yaml"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "GitLab CI Local Visualizer",
+      "properties": {
+        "gitlabCiLocal.language": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "en",
+            "id"
+          ],
+          "enumDescriptions": [
+            "%config.language.auto%",
+            "%config.language.en%",
+            "%config.language.id%"
+          ],
+          "description": "%config.language%"
+        },
+        "gitlabCiLocal.searchRoots": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "%config.searchRoots%"
+        },
+        "gitlabCiLocal.projectMappings": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "type": "string"
+          },
+          "markdownDescription": "%config.projectMappings%"
+        },
+        "gitlabCiLocal.wslScriptPath": {
+          "type": "string",
+          "default": "",
+          "description": "%config.wslScriptPath%"
+        },
+        "gitlabCiLocal.pythonPath": {
+          "type": "string",
+          "default": "",
+          "description": "%config.pythonPath%"
+        },
+        "gitlabCiLocal.dynamicChildren": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "type": "string"
+          },
+          "markdownDescription": "%config.dynamicChildren%"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "gitlab-ci-local.openVisualizer",
+        "title": "%command.openVisualizer%",
+        "icon": {
+          "light": "media/icon-light.svg",
+          "dark": "media/icon-dark.svg"
+        }
+      },
+      {
+        "command": "gitlab-ci-local.openVisualizerAtJob",
+        "title": "%command.openVisualizerAtJob%"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "gitlab-ci-local.openVisualizer",
+          "when": "resourceExtname =~ /\\.(ya?ml)$/i",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "gitlab-ci-local.openVisualizer",
+          "when": "resourceExtname =~ /\\.(ya?ml)$/i",
+          "group": "1_modification"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "gitlab-ci-local.openVisualizer",
+          "when": "resourceExtname =~ /\\.(ya?ml)$/i",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build-webview.js",
+    "package": "node scripts/build-webview.js && npx -y -p node@22.12.0 -p @vscode/vsce@4.1.0 -- vsce package --no-dependencies",
+    "mirror:github": "bash scripts/sync-github-mirror.sh",
+    "test": "vitest --run",
+    "test:unit": "vitest --run test/unit",
+    "test:property": "vitest --run test/property",
+    "test:integration": "vitest --run test/integration",
+    "test:watch": "vitest",
+    "test:python": "bash scripts/run-py-tests.sh -q"
+  },
+  "devDependencies": {
+    "dagre": "0.8.5",
+    "fast-check": "3.23.2",
+    "jsdom": "23.2.0",
+    "vitest": "1.6.1"
+  }
+}

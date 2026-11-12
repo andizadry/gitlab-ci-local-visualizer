@@ -1,0 +1,13 @@
+{
+  "command.openVisualizer": "GitLab CI Local: Buka Visualizer",
+  "command.openVisualizerAtJob": "GitLab CI Local: Simulasi/Fokus Job",
+  "config.language": "Bahasa untuk UI visualizer dan pesan engine.",
+  "config.language.auto": "Ikuti bahasa tampilan editor (Indonesia bila editor berbahasa Indonesia, selain itu Inggris).",
+  "config.language.en": "Inggris (English)",
+  "config.language.id": "Indonesia",
+  "config.searchRoots": "Folder yang dicari (berurutan) untuk me-resolve `include:project` secara lokal. Tiap folder boleh berisi repo dengan susunan sesuai path project, mis. `/home/saya/repos` berisi `grup-saya/ci-templates`. Path diteruskan ke engine di environment tempat file CI berada (path WSL untuk file yang dibuka dari WSL). Contoh: `[\"/home/saya/repos\"]`.",
+  "config.projectMappings": "Pemetaan eksplisit path project GitLab ke folder lokal, dicek sebelum `searchRoots`. Contoh: `{ \"grup-saya/ci-templates\": \"/home/saya/repos/ci-templates\" }`.",
+  "config.wslScriptPath": "Path Linux absolut ke ci_preview.py di dalam distro WSL. Kosongkan untuk deteksi otomatis. Dipakai saat membuka file GitLab CI yang tersimpan di WSL dari editor sisi Windows.",
+  "config.pythonPath": "Ganti perintah interpreter Python (mis. 'python3', 'python', atau path absolut). Kosongkan untuk deteksi otomatis.",
+  "config.dynamicChildren": "Petakan child pipeline dinamis (dibuat saat runtime via `trigger:include:artifact`) ke file YAML contoh agar bisa divisualisasikan dan disimulasikan offline. Key = nama bridge job, nama file artifact, atau nama job generator. Value = path file contoh (path relatif diselesaikan terhadap folder file CI yang memuat bridge job). Contoh: `{ \"trigger-generated\": \"samples/generated-pipeline.yml\" }`."
+}

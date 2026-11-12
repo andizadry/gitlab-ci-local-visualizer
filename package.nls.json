@@ -1,0 +1,13 @@
+{
+  "command.openVisualizer": "GitLab CI Local: Open Visualizer",
+  "command.openVisualizerAtJob": "GitLab CI Local: Simulate/Focus Job",
+  "config.language": "Language for the visualizer UI and engine messages.",
+  "config.language.auto": "Follow the editor display language (Indonesian if the editor is set to Indonesian, otherwise English).",
+  "config.language.en": "English",
+  "config.language.id": "Indonesian (Bahasa Indonesia)",
+  "config.searchRoots": "Folders searched (in order) to resolve `include:project` locally. Each folder may contain repositories laid out by project path, e.g. `/home/me/repos` holding `my-group/ci-templates`. Paths are passed to the engine in the environment where the CI file lives (WSL paths for files opened from WSL). Example: `[\"/home/me/repos\"]`.",
+  "config.projectMappings": "Explicit mapping from a GitLab project path to a local folder, used before `searchRoots`. Example: `{ \"my-group/ci-templates\": \"/home/me/repos/ci-templates\" }`.",
+  "config.wslScriptPath": "Absolute Linux path to ci_preview.py inside your WSL distro. Leave empty to auto-detect. Used when opening GitLab CI files stored in WSL from a Windows-side editor.",
+  "config.pythonPath": "Override the Python interpreter command (e.g. 'python3', 'python', or an absolute path). Leave empty to auto-detect.",
+  "config.dynamicChildren": "Map a dynamic child pipeline (generated at runtime via `trigger:include:artifact`) to a sample YAML file so it can be visualized and simulated offline. Key = bridge job name, artifact file name, or generator job name. Value = path to the sample file (relative paths resolve against the folder of the CI file that contains the bridge job). Example: `{ \"trigger-generated\": \"samples/generated-pipeline.yml\" }`."
+}

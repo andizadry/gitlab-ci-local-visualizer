@@ -1,0 +1,71 @@
+# Test setiap push/PR; publish ke VS Code Marketplace + Open VSX saat tag v* di-push.
+# Publish memakai trusted publishing (OIDC): tidak ada token yang disimpan sebagai secret.
+# Prasyarat (sekali): policy Trusted Publishing di kedua marketplace menunjuk
+#   owner=andizadry, repo=gitlab-ci-local-visualizer, workflow=publish.yml (tanpa environment).
+name: Publish extension
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: python -m pip install pytest==8.3.3 hypothesis==6.115.0 pyyaml==6.0.2
+      - name: Python tests
+        run: python -m pytest -q -p no:cacheprovider
+      - name: JS tests
+        run: npx vitest --run
+
+  publish:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # OIDC untuk trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Tag must match package.json version
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version v$VERSION"
+            exit 1
+          fi
+      - name: Build webview
+        run: node scripts/build-webview.js
+      - name: Package
+        run: npx -y @vscode/vsce@4.1.0 package --no-dependencies --out extension.vsix
+      - name: Publish to VS Code Marketplace
+        run: npx -y @vscode/vsce@4.1.0 publish --oidc --packagePath extension.vsix
+      - name: Publish to Open VSX
+        run: npx -y ovsx@1.4.0 publish extension.vsix --trusted-publishing
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension-vsix
+          path: extension.vsix

@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Config lokal (berisi path repo pribadi) — pakai config.example.json sebagai template
+config.json
+
+# Artefak build & paket
+*.vsix
+
+# Cache & sementara
+__pycache__/
+*.pyc
+.hypothesis/
+.pytest_cache/
+.venv-test/
+scripts/*.log
+scripts/_*
+
+# Editor / OS
+.DS_Store
+Thumbs.db

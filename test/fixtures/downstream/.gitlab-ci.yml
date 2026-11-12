@@ -1,0 +1,35 @@
+stages: [build, trigger]
+
+variables:
+  APP_ENV: staging
+
+build-app:
+  stage: build
+  script:
+    - echo build
+
+run-child:
+  stage: trigger
+  needs: [build-app]
+  variables:
+    DEPLOY_TARGET: demo
+  trigger:
+    include: ci/child.yml
+    strategy: mirror
+
+generate-dynamic:
+  stage: build
+  script:
+    - echo generate
+  artifacts:
+    paths:
+      - generated-jobs.yml
+
+run-dynamic:
+  stage: trigger
+  needs: [generate-dynamic]
+  trigger:
+    include:
+      - artifact: generated-jobs.yml
+        job: generate-dynamic
+    strategy: depend

@@ -1,0 +1,14 @@
+{
+  "search_roots": [
+    "/path/to/your/repos/app-frontend",
+    "/path/to/your/repos/app-backend",
+    "/path/to/your/workspace"
+  ],
+  "project_mappings": {
+    "group/subgroup/shared-ci": "/path/to/your/repos/shared-ci",
+    "group/downstream-app": "/path/to/your/repos/downstream-app"
+  },
+  "dynamic_children": {
+    "trigger-generated": "samples/generated-pipeline.yml"
+  }
+}

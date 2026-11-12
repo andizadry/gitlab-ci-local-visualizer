@@ -1,0 +1,9 @@
+qa-smoke:
+  script:
+    - echo smoke
+
+qa-regression:
+  script:
+    - echo regression
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'

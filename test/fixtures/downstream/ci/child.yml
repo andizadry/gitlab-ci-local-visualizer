@@ -1,0 +1,15 @@
+stages: [test, deploy]
+
+unit-test:
+  stage: test
+  script:
+    - echo unit
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline" && $DEPLOY_TARGET == "demo"'
+
+deploy-child:
+  stage: deploy
+  needs: [unit-test]
+  script:
+    - echo deploy
+  when: manual

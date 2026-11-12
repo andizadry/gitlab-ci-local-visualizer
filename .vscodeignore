@@ -1,0 +1,25 @@
+# Whitelist: hanya file runtime yang masuk paket marketplace.
+# config.json (berisi path pribadi), test, sumber webview, spec, node_modules TIDAK ikut.
+**
+!extension.js
+!package.json
+!package.nls.json
+!package.nls.id.json
+!ci_preview.py
+!rules_evaluator.py
+!ci_inputs.py
+!ci_keywords.py
+!ci_i18n.py
+!webview.html
+!vendor/dagre.min.js
+!vendor/pyyaml/LICENSE
+!vendor/pyyaml/README.txt
+!vendor/pyyaml/yaml/*.py
+!media/icon-dark.svg
+!media/icon-light.svg
+!icon.png
+!README.md
+!README.id.md
+!INSTALL.md
+!CHANGELOG.md
+!LICENSE
